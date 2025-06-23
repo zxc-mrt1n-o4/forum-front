@@ -1,163 +1,192 @@
-# Анонимный Русский Блог
+# Forum Frontend
 
-Анонимная платформа для обмена важной информацией, созданная с помощью Next.js, React и Tailwind CSS.
+Frontend for the Anonymous Russian Forum built with Next.js, React, and Tailwind CSS.
 
-## 🚀 Возможности
+## 🚀 Features
 
-- **Анонимные публикации** - Полная анонимность для защиты пользователей
-- **Система модерации** - Все посты проверяются администратором перед публикацией
-- **Регистрация с подтверждением** - Новые пользователи требуют одобрения администратора
-- **Скрытая админ-панель** - Секретный доступ для управления контентом
-- **Темная тема** - Современный дизайн с серыми оттенками
-- **Отслеживание IP** - Логирование для безопасности (скрыто от публичного просмотра)
+- **Anonymous Posting** - Complete anonymity protection for users
+- **User Authentication** - Registration and login with JWT tokens
+- **User Verification System** - Admin approval required for new accounts
+- **Like System** - Toggle likes on posts with proper authentication
+- **Admin Panel** - Hidden admin dashboard for content management
+- **Dark Theme** - Modern design with gray color scheme
+- **Responsive Design** - Works on desktop and mobile devices
+- **Russian Interface** - Complete Russian localization
 
-## 🛠️ Технологии
+## 🛠️ Technologies
 
-- **Frontend**: Next.js 14, React 18, TypeScript
+- **Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
 - **Styling**: Tailwind CSS
-- **Database**: MongoDB с Mongoose
-- **Authentication**: JWT, bcrypt
-- **UI Components**: React Hook Form, React Hot Toast
+- **State Management**: React Hooks
+- **HTTP Client**: Fetch API
+- **Authentication**: JWT tokens
+- **UI Components**: Custom components with Tailwind
+- **Notifications**: React Hot Toast
 
-## 📦 Установка
+## 📦 Installation
 
-1. **Клонируйте репозиторий**
+1. **Clone the repository**
 ```bash
-git clone <repository-url>
-cd russian-blog-cms
+git clone https://github.com/zxc-mrt1n-o4/forum-front.git
+cd forum-front
 ```
 
-2. **Установите зависимости**
+2. **Install dependencies**
 ```bash
 npm install
 ```
 
-3. **Настройте переменные окружения**
-Создайте файл `.env.local` и добавьте:
-```env
-MONGODB_URI=mongodb://localhost:27017/russian-blog
-JWT_SECRET=your-super-secret-jwt-key-here
-NEXTAUTH_SECRET=your-nextauth-secret-here
-NEXTAUTH_URL=http://localhost:3000
-ADMIN_SECRET_KEY=ultra-secret-admin-key-2024
-```
-
-4. **Запустите MongoDB**
+3. **Set up environment variables**
+Copy `.env.example` to `.env.local` and configure:
 ```bash
-# Убедитесь, что MongoDB запущен локально
-mongod
+cp .env.example .env.local
 ```
 
-5. **Запустите приложение**
+Required environment variables:
+- `NEXT_PUBLIC_BACKEND_URL` - Backend API URL (e.g., https://your-backend.railway.app)
+
+4. **Start the development server**
 ```bash
 npm run dev
 ```
 
-Откройте [http://localhost:3000](http://localhost:3000) в браузере.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## 🔐 Доступ к админ-панели
+## 🔐 Admin Access
 
-### Способ 1: Секретный триггер
-1. Перейдите на главную страницу
-2. Нажмите на невидимую область в правом верхнем углу навигации
-3. Введите ключ: `admin_secret_2024_truth`
-4. Вы будете перенаправлены в админ-панель
+### Method 1: Direct URL
+Navigate to `/admin-access` and log in with admin credentials.
 
-### Способ 2: Прямой URL
-Перейдите на `/admin/dashboard` (требует аутентификации)
+### Method 2: Admin Button
+If logged in as admin, the admin button will appear in the navbar.
 
-## 📋 Структура проекта
+## 📁 Project Structure
 
 ```
-├── app/
-│   ├── admin/dashboard/        # Секретная админ-панель
-│   ├── api/                    # API маршруты
-│   │   ├── auth/               # Аутентификация
-│   │   ├── posts/              # Управление постами
-│   │   └── admin/              # Админ API
-│   ├── about/                  # Страница "О проекте"
-│   ├── login/                  # Страница входа
-│   ├── register/               # Страница регистрации
-│   ├── submit/                 # Форма создания поста
-│   └── globals.css             # Глобальные стили
-├── components/                 # React компоненты
-│   ├── Navbar.tsx             # Навигация
-│   ├── Footer.tsx             # Подвал
-│   ├── HeroSection.tsx        # Главная секция
-│   └── BlogList.tsx           # Список постов
-├── lib/                       # Утилиты
-│   ├── mongodb.ts             # Подключение к БД
-│   └── models/                # Mongoose модели
-│       ├── User.ts            # Модель пользователя
-│       └── Post.ts            # Модель поста
-└── README.md                  # Документация
+├── app/                        # Next.js app directory
+│   ├── admin/                  # Admin panel pages
+│   │   └── dashboard/          # Admin dashboard
+│   ├── admin-access/           # Hidden admin login
+│   ├── about/                  # About page
+│   ├── create-post/            # Post creation (deprecated)
+│   ├── login/                  # User login
+│   ├── posts/                  # Individual post pages
+│   ├── register/               # User registration
+│   ├── submit/                 # Post submission (deprecated)
+│   ├── globals.css             # Global styles
+│   ├── layout.tsx              # Root layout
+│   └── page.tsx                # Home page
+├── components/                 # React components
+│   ├── BlogList.tsx            # Posts list with like functionality
+│   ├── Footer.tsx              # Site footer
+│   ├── Navbar.tsx              # Navigation with auth
+│   └── PostList.tsx            # Alternative post list
+├── lib/                        # Utilities and API
+│   ├── api.ts                  # API client functions
+│   └── types/                  # TypeScript type definitions
+├── public/                     # Static assets
+├── .env.example                # Environment variables template
+├── Dockerfile                  # Docker configuration
+├── next.config.js              # Next.js configuration
+├── railway.json                # Railway deployment config
+└── tailwind.config.js          # Tailwind CSS configuration
 ```
 
-## 🎯 Основные функции
+## 🎯 Main Features
 
-### Для пользователей:
-- Анонимная публикация постов
-- Регистрация и аутентификация
-- Просмотр одобренных постов
-- Система тегов
+### For Users:
+- **Anonymous posting** - Create posts without revealing identity
+- **User registration** - Create account (requires admin verification)
+- **Post viewing** - Browse all approved posts
+- **Like system** - Like/unlike posts (requires authentication)
+- **Responsive design** - Works on all devices
 
-### Для администраторов:
-- Модерация постов
-- Управление пользователями
-- Просмотр IP-адресов и User Agent
-- Одобрение/удаление контента
+### For Admins:
+- **User management** - View, verify, and delete users
+- **Post moderation** - View all posts with metadata
+- **System statistics** - User and post analytics
+- **Hidden access** - Secret admin panel access
 
-## 🔒 Безопасность
+## 🚀 Railway Deployment
 
-- Все пароли хешируются с помощью bcrypt
-- JWT токены для аутентификации
-- IP-адреса логируются для безопасности
-- Модерация всего контента
-- Скрытая админ-панель
+This frontend is configured for Railway deployment with:
 
-## 🌐 API Endpoints
+1. **Dockerfile** - Multi-stage build for production
+2. **Environment Variables** - Automatic configuration
+3. **Static Export** - Optimized for deployment
+4. **CORS Configuration** - Properly configured for backend
 
-### Публичные
-- `GET /api/posts` - Получить одобренные посты
-- `POST /api/posts` - Создать новый пост
-- `GET /api/posts/[id]` - Получить конкретный пост
-- `POST /api/auth/register` - Регистрация
-- `POST /api/auth/login` - Вход
+### Deploy to Railway
 
-### Админские (требуют авторизации)
-- `GET /api/admin/users` - Список пользователей
-- `POST /api/admin/users/[id]/approve` - Одобрить пользователя
-- `GET /api/admin/posts` - Все посты
-- `POST /api/admin/posts/[id]/approve` - Одобрить пост
-- `DELETE /api/admin/posts/[id]` - Удалить пост
+1. **Connect Repository**
+   - Go to [Railway](https://railway.app)
+   - Create new project from GitHub repo
+   - Select this frontend repository
 
-## 📝 Использование
+2. **Environment Variables**
+   Railway will auto-generate most variables. Set:
+   - `NEXT_PUBLIC_BACKEND_URL` - Your backend Railway URL
 
-1. **Создание поста**: Перейдите на `/submit` и заполните форму
-2. **Регистрация**: Создайте аккаунт на `/register`
-3. **Модерация**: Администратор должен одобрить посты и пользователей
-4. **Просмотр**: Одобренные посты появятся на главной странице
+3. **Deploy**
+   - Railway will automatically build and deploy
+   - Frontend will be available at generated Railway URL
+   - Connect with your backend for full functionality
 
-## ⚠️ Важные заметки
+## ⚙️ Configuration
 
-- Все новые пользователи требуют одобрения администратора
-- Все посты проходят модерацию перед публикацией
-- IP-адреса сохраняются для безопасности
-- Используйте сильные пароли и ключи в production
+### Environment Variables
+```env
+# Backend API URL
+NEXT_PUBLIC_BACKEND_URL=https://your-backend-domain.railway.app
 
-## 🚀 Деплой
+# Optional: Custom domain
+NEXT_PUBLIC_SITE_URL=https://your-frontend-domain.railway.app
+```
 
-Для production:
-1. Настройте MongoDB Atlas или другую облачную БД
-2. Обновите переменные окружения
-3. Измените секретные ключи
-4. Настройте HTTPS
-5. Задеплойте на Vercel/Netlify/другой платформе
+### API Integration
+The frontend connects to the backend API for:
+- User authentication and registration
+- Post creation and retrieval
+- Like system functionality
+- Admin panel operations
+- User verification system
 
-## 📞 Поддержка
+## 🎨 Styling
 
-Для вопросов и поддержки обращайтесь к администрации через анонимные каналы связи.
+The application uses a dark theme with gray color scheme:
+- **Background**: Dark gray (`bg-gray-800`, `bg-gray-900`)
+- **Cards**: Medium gray (`bg-gray-700`)
+- **Text**: White and light gray
+- **Accents**: Blue for links, green for success, red for errors
+
+## 📱 Responsive Design
+
+- **Mobile First**: Designed for mobile devices
+- **Breakpoints**: Responsive grid and layouts
+- **Touch Friendly**: Large buttons and touch targets
+- **Adaptive**: Adjusts to different screen sizes
+
+## 🔒 Security Features
+
+- **JWT Authentication** - Secure token-based authentication
+- **Protected Routes** - Admin routes require authentication
+- **CSRF Protection** - Cross-site request forgery protection
+- **Input Validation** - Client-side input validation
+- **XSS Prevention** - Proper data sanitization
+
+## 🚨 Important Notes
+
+- **Backend Required**: This frontend requires the backend API to function
+- **Admin Verification**: New users need admin approval to post
+- **Anonymous Posts**: Posts can be created anonymously
+- **Like Authentication**: Likes require user authentication
+- **Railway Deployment**: Configured for Railway platform
+
+## 📞 Support
+
+For technical support or questions about the frontend, refer to the project documentation or contact the development team.
 
 ---
 
-**Важно**: Этот проект создан для образовательных целей. Убедитесь, что вы следуете всем применимым законам и правилам при использовании. 
+**Note**: This is the frontend component. You also need to deploy the backend API from the [forum-back repository](https://github.com/zxc-mrt1n-o4/forum-back) for full functionality. 
