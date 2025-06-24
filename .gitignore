@@ -18,6 +18,9 @@ dist/
 .env.production.local
 backend-server/.env
 
+# Allow production env file for Railway (contains only non-sensitive variables)
+!.env.production
+
 # Database
 *.db
 *.sqlite
