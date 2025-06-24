@@ -2,27 +2,37 @@
 const getBackendUrl = () => {
   // For server-side rendering (internal Railway communication)
   if (typeof window === 'undefined') {
-    return process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
+    // Ensure protocol is included
+    if (!backendUrl.startsWith('http://') && !backendUrl.startsWith('https://')) {
+      return `https://${backendUrl}`;
+    }
+    return backendUrl;
   }
   
   // For client-side (browser requests) - use public URL
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
   
+  // Ensure protocol is included
+  let finalUrl = backendUrl;
+  if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+    finalUrl = `https://${finalUrl}`;
+  }
+  
   // If it's a Railway internal URL, we need the public version for browser requests
-  if (backendUrl.includes('.railway.internal')) {
+  if (finalUrl.includes('.railway.internal')) {
     // Try to get the public URL from environment or construct it
     const publicUrl = process.env.NEXT_PUBLIC_BACKEND_PUBLIC_URL;
     if (publicUrl) {
-      return publicUrl;
+      return publicUrl.startsWith('http') ? publicUrl : `https://${publicUrl}`;
     }
     
     // If no public URL is set, assume it follows Railway pattern
-    // Convert forum-back.railway.internal to forum-back-production-xxxx.up.railway.app
     console.warn('Using internal Railway URL for browser requests. Set NEXT_PUBLIC_BACKEND_PUBLIC_URL for production.');
-    return backendUrl.replace('.railway.internal', '.up.railway.app');
+    return finalUrl.replace('.railway.internal', '.up.railway.app');
   }
   
-  return backendUrl;
+  return finalUrl;
 };
 
 const API_BASE_URL = `${getBackendUrl()}/api`;
