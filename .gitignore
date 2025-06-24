@@ -25,8 +25,16 @@ backend-server/.env
 *.db
 *.sqlite
 *.sqlite3
+# Allow backend database
+!backend/database/blog.db
 backend-server/data/
 data/
+
+# Backend node_modules
+backend/node_modules/
+
+# Make sure node_modules is ignored everywhere
+**/node_modules/
 
 # Logs
 logs/
