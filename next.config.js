@@ -12,6 +12,23 @@ const nextConfig = {
   // Image optimization for production
   images: {
     unoptimized: true
+  },
+  
+  // Experimental features for better Railway support
+  experimental: {
+    // Enable server-side environment variables
+    serverComponentsExternalPackages: []
+  },
+  
+  // Configure for Railway deployment
+  async rewrites() {
+    return [
+      // Health check rewrite for Railway
+      {
+        source: '/health',
+        destination: '/',
+      },
+    ]
   }
 }
 
